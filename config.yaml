@@ -1,0 +1,112 @@
+# =============================================================================
+# IOFAE Trading Bot - Configuration File
+# =============================================================================
+
+# MetaTrader 5 Connection Settings
+mt5:
+  login: 12345678                    # MT5 hesap numarası
+  password: "your_password"          # MT5 şifresi
+  server: "ICMarkets-Demo"           # Broker sunucusu
+  timeout: 60000                     # Bağlantı timeout (ms)
+  portable_path: null                # MT5 terminal yolu (opsiyonel)
+
+# Trading Parameters
+trading:
+  symbol: "EURUSD"                   # İşlem yapılacak sembol
+  magic_number: 123456               # Pozisyon tanımlayıcı
+  deviation: 10                      # Max slippage (points)
+  
+  # Entry Parameters
+  entry_offset_pips: 7               # Execution zone'dan kaç pip önce gir
+  scan_range_pips: 20                # Tarama aralığı (±20 pip)
+  
+  # Exit Parameters  
+  stop_loss_pips: 10                 # Stop loss mesafesi
+  take_profit_pips: 0                # 0 = dinamik (exhaustion'da kapat)
+  max_hold_time_minutes: 15          # Maksimum pozisyon tutma süresi
+  
+  # Score Threshold
+  min_score_threshold: 90            # Minimum skor (trade açmak için)
+
+# Risk Management
+risk:
+  risk_per_trade: 0.01               # Trade başına risk (%1)
+  max_daily_loss: 0.05               # Günlük maksimum kayıp (%5)
+  max_total_drawdown: 0.10           # Toplam maksimum drawdown (%10)
+  max_trades_per_day: 3              # Günde maksimum trade sayısı
+  min_trade_interval_seconds: 10800  # Trade arası minimum süre (3 saat)
+
+# Prop Firm Challenge Settings
+prop_firm:
+  profit_target: 0.10                # Hedef kar (%10)
+  challenge_days: 30                 # Challenge süresi (gün)
+  min_trading_days: 4                # Minimum trade günü
+
+# Score Calculation Weights
+scoring:
+  vwap_max_points: 30                # VWAP mesafesi max puan
+  round_number_max_points: 25        # Round number max puan
+  fibonacci_max_points: 20           # Fibonacci max puan
+  dom_volume_max_points: 15          # DOM volume max puan
+  delta_imbalance_max_points: 10     # Delta imbalance max puan
+  
+  # Thresholds
+  vwap_distance_threshold_high: 0.003   # %0.3+ uzaklık = max puan
+  vwap_distance_threshold_mid: 0.002    # %0.2+ uzaklık = orta puan
+  vwap_distance_threshold_low: 0.001    # %0.1+ uzaklık = düşük puan
+  
+  dom_volume_threshold: 1500         # DOM volume eşik değeri
+  delta_imbalance_threshold: 8000    # Delta imbalance eşik değeri
+  fibonacci_proximity_pips: 5        # Fibonacci seviyesine yakınlık
+
+# Exhaustion Detection Parameters
+exhaustion:
+  volume_drop_threshold: 0.70        # Volume düşüş eşiği (%30 düşüş)
+  spread_widen_threshold: 1.50       # Spread genişleme eşiği (%50 artış)
+  price_stall_pips: 2                # Fiyat durağanlık eşiği (pip)
+  ema_period: 50                     # EMA periyodu
+
+# Correlation Check
+correlation:
+  enabled: true
+  dxy_symbol: "DXY"                  # Dollar Index sembolü
+  min_correlation: -0.85             # EUR/USD vs DXY korelasyonu
+
+# Blackout Periods (Major News)
+blackout_periods:
+  - start: "13:00"
+    end: "14:15"
+    description: "CPI/NFP/FOMC"
+  - start: "18:30"
+    end: "20:00"
+    description: "Major Economic Data"
+
+# Session Hours (UTC)
+sessions:
+  london_start: "07:00"
+  london_end: "16:00"
+  newyork_start: "12:00"
+  newyork_end: "21:00"
+  active_sessions_only: true         # Sadece aktif seanslarda trade
+
+# Database Settings
+database:
+  path: "data/iofae_trades.db"
+  dom_history_days: 20               # DOM verisi saklama süresi
+
+# Telegram Notifications
+telegram:
+  enabled: true
+  bot_token: "YOUR_BOT_TOKEN"
+  chat_id: "YOUR_CHAT_ID"
+  notify_on_trade: true
+  notify_on_error: true
+  notify_on_daily_summary: true
+
+# Logging
+logging:
+  level: "INFO"                      # DEBUG, INFO, WARNING, ERROR
+  file_path: "logs/iofae.log"
+  max_size_mb: 10
+  backup_count: 5
+  console_output: true

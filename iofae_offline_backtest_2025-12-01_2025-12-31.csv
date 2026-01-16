@@ -1,2 +1,0 @@
-entry_time,exit_time,direction,entry_price,exit_price,zone_price,score,zone_type,pips,profit,lot,exit_reason,holding_minutes
-2025-12-01 08:27:00,2025-12-01 08:42:00,SHORT,1.0561576634865333,1.0566668577967746,1.0554576634865334,92,STOP_HUNT_HIGH,-5.091943102413232,-254.59715512066163,5.0,TIME_LIMIT,15.0

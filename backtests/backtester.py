@@ -17,7 +17,12 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Tuple
 from collections import deque
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from pathlib import Path
+
+# Add project root to path
+root_dir = Path(__file__).parent.parent
+sys.path.append(str(root_dir))
+sys.path.append(str(root_dir / "core"))
 
 
 @dataclass
@@ -76,6 +81,10 @@ class IOFAEBacktester:
     """
     
     def __init__(self, config_path: str = "config.yaml"):
+        # If relative path, join with root_dir
+        if not os.path.isabs(config_path):
+            config_path = str(root_dir / config_path)
+            
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
         
@@ -713,7 +722,7 @@ def main():
     parser.add_argument('--config', default='config.yaml', help='Config file')
     args = parser.parse_args()
     
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    # os.chdir(os.path.dirname(os.path.abspath(__file__))) # Removed to use root_dir logic
     
     bt = IOFAEBacktester(args.config)
     

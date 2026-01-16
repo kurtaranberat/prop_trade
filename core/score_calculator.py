@@ -17,7 +17,7 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 import numpy as np
 
-from data_collector import MarketData
+from .data_collector import MarketData
 from database.dom_logger import DOMLogger
 from utils.logger import get_logger
 

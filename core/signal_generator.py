@@ -7,8 +7,8 @@ from datetime import datetime, time, timedelta
 from typing import List, Optional, Dict, Tuple
 import MetaTrader5 as mt5
 
-from data_collector import MarketData
-from score_calculator import ScoreCalculator, ExecutionZone
+from .data_collector import MarketData
+from .score_calculator import ScoreCalculator, ExecutionZone
 from database.dom_logger import DOMLogger
 from utils.logger import get_logger
 

@@ -173,13 +173,16 @@ def test_iofae_import():
 def run_full_test():
     """Run complete test suite."""
     
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    from pathlib import Path
+    root_dir = Path(__file__).parent.parent
+    os.chdir(str(root_dir))
     
     # Load config
     config = {}
     try:
         import yaml
-        with open('config.yaml', 'r') as f:
+        config_path = root_dir / 'config.yaml'
+        with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
     except:
         print("⚠️ config.yaml okunamadı, varsayılan değerler kullanılacak")

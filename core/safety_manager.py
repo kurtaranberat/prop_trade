@@ -7,7 +7,9 @@ Prop Firm kurallarını korumak için geliştirilmiş güvenlik modülü.
 import MetaTrader5 as mt5
 from datetime import datetime, timedelta
 import yaml
-import logging
+from utils.logger import get_logger
+
+logger = get_logger()
 
 class SafetyManager:
     def __init__(self, config_path='config.yaml'):
@@ -16,7 +18,6 @@ class SafetyManager:
         
         self.max_daily_loss_pct = self.config['risk'].get('max_daily_loss', 0.04)
         self.news_blackout_minutes = 30
-        self.logger = logging.getLogger("SafetyManager")
 
     def check_daily_drawdown(self):
         """Günlük kayıp sınırına ulaşıldı mı kontrol eder."""
@@ -32,7 +33,7 @@ class SafetyManager:
         daily_loss = (initial_balance - current_equity) / initial_balance
         
         if daily_loss >= self.max_daily_loss_pct:
-            self.logger.warning(f"🚨 KRİTİK: Günlük kayıp sınırı (%{daily_loss*100:.2f}) aşıldı! Trading durduruluyor.")
+            logger.warning(f"🚨 KRİTİK: Günlük kayıp sınırı (%{daily_loss*100:.2f}) aşıldı! Trading durduruluyor.")
             return False
         return True
 
@@ -57,7 +58,7 @@ class SafetyManager:
             
             # Haberden 30 dk önce ve 30 dk sonra işlem yapma
             if abs((now_utc - news_dt).total_seconds()) < (self.news_blackout_minutes * 60):
-                self.logger.info(f"⏳ Haber Koruması: {news_time} haberi nedeniyle trading askıda.")
+                logger.info(f"⏳ Haber Koruması: {news_time} haberi nedeniyle trading askıda.")
                 return True
         return False
 

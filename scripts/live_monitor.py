@@ -5,20 +5,29 @@ Canlı piyasada kurumsal emir bölgelerini ve skorları anlık izleme aracı.
 İşlem açmaz, sadece analiz eder.
 """
 
+import sys
+from pathlib import Path
+
+# Add project root to path
+root_dir = Path(__file__).parent.parent
+sys.path.append(str(root_dir))
+sys.path.append(str(root_dir / "core"))
+
 import MetaTrader5 as mt5
 import time
 import os
 import yaml
 from datetime import datetime
-from score_calculator import ScoreCalculator
-from data_collector import DataCollector
+from core.score_calculator import ScoreCalculator
+from core.data_collector import DataCollector
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def run_monitor():
     # 1. Config Yükle
-    with open('config.yaml', 'r') as f:
+    config_path = root_dir / 'config.yaml'
+    with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
     
     symbol = config['trading']['symbol']

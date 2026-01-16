@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from typing import Optional, Dict, List
 import numpy as np
 
-from signal_generator import TradeSignal
-from data_collector import DataCollector
+from .signal_generator import TradeSignal
+from .data_collector import DataCollector
 from utils.logger import get_logger
 
 logger = get_logger()

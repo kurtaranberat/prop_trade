@@ -15,14 +15,15 @@ import signal
 from datetime import datetime, date
 from typing import Optional
 
-# Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add core directory to path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'core'))
 
-from data_collector import DataCollector
-from score_calculator import ScoreCalculator
-from signal_generator import SignalGenerator
-from position_manager import PositionManager
-from risk_controller import RiskController
+from core.data_collector import DataCollector
+from core.score_calculator import ScoreCalculator
+from core.signal_generator import SignalGenerator
+from core.position_manager import PositionManager
+from core.risk_controller import RiskController
+from core.safety_manager import SafetyManager
 from database.dom_logger import DOMLogger
 from utils.logger import IOFAELogger
 from utils.notifier import create_notifier
@@ -63,6 +64,7 @@ class IOFAEBot:
         self.signal_gen: Optional[SignalGenerator] = None
         self.position_mgr: Optional[PositionManager] = None
         self.risk_ctrl: Optional[RiskController] = None
+        self.safety_mgr: Optional[SafetyManager] = None
         
         # Register signal handlers
         signal.signal(signal.SIGINT, self._signal_handler)
@@ -116,6 +118,9 @@ class IOFAEBot:
         self.risk_ctrl = RiskController(self.config, self.db, self.notifier)
         self.risk_ctrl.initialize(account.get('balance', 0))
         
+        # Initialize safety manager
+        self.safety_mgr = SafetyManager(self.config_path)
+        
         # Store current date for daily reset
         self._current_date = date.today()
         
@@ -167,9 +172,15 @@ class IOFAEBot:
                 # Monitor open positions
                 self._monitor_positions()
                 
-                # Check if we can trade
-                can_trade, reason = self.risk_ctrl.can_trade()
-                if not can_trade:
+                # Check if we can trade (Risk + Safety)
+                can_trade_risk, risk_reason = self.risk_ctrl.can_trade()
+                if not can_trade_risk:
+                    self.logger.debug(f"Risk limit: {risk_reason}")
+                    time.sleep(1)
+                    continue
+                
+                if not self.safety_mgr.can_trade():
+                    # Safety manager logs its own reasons
                     time.sleep(1)
                     continue
                 

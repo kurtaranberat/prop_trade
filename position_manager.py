@@ -114,7 +114,15 @@ class PositionManager:
             'confidence': signal.confidence
         }
         
-        logger.trade_open(self.symbol, signal.direction, lot_size, price, signal.stop_loss)
+        logger.trade_open(
+            self.symbol, 
+            signal.direction, 
+            lot_size, 
+            price, 
+            signal.stop_loss,
+            zone_type=signal.zone.zone_type,
+            score=signal.zone.score
+        )
         
         return ticket
     
@@ -322,7 +330,6 @@ class PositionManager:
             "type_time": mt5.ORDER_TIME_GTC,
             "type_filling": mt5.ORDER_FILLING_IOC,
         }
-        
         result = mt5.order_send(request)
         
         if result is None or result.retcode != mt5.TRADE_RETCODE_DONE:
@@ -333,7 +340,8 @@ class PositionManager:
         self._position_entry_times.pop(position.ticket, None)
         self._position_meta.pop(position.ticket, None)
         
-        logger.trade_close(self.symbol, position.profit, position.pips, reason)
+        duration = (datetime.now() - position.entry_time).total_seconds() / 60
+        logger.trade_close(self.symbol, position.profit, position.pips, reason, duration_mins=duration)
         
         return True
     

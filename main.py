@@ -224,6 +224,7 @@ class IOFAEBot:
                     
                     # Send notification
                     if self.notifier:
+                        duration = (datetime.now() - position.entry_time).total_seconds() / 60
                         self.notifier.notify_trade_close(
                             symbol=position.symbol,
                             direction=position.direction,
@@ -232,7 +233,8 @@ class IOFAEBot:
                             exit_price=position.current_price,
                             profit=position.profit,
                             pips=position.pips,
-                            reason=close_reason
+                            reason=close_reason,
+                            duration_mins=duration
                         )
     
     def _execute_signal(self, signal):
@@ -270,7 +272,9 @@ class IOFAEBot:
                     lot=lot_size,
                     entry_price=signal.entry_price,
                     stop_loss=signal.stop_loss,
-                    score=signal.zone.score
+                    score=signal.zone.score,
+                    zone_type=signal.zone.zone_type,
+                    confluence=signal.confluence_factors
                 )
     
     def _daily_reset(self):

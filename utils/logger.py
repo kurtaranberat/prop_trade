@@ -94,15 +94,15 @@ class IOFAELogger:
         msg = f"📊 SIGNAL | {symbol} | {direction} | Score: {score:.1f} | Price: {price:.5f}"
         self._logger.info(msg)
     
-    def trade_open(self, symbol: str, direction: str, lot: float, entry: float, sl: float):
-        """Log a trade opened."""
-        msg = f"🟢 OPEN | {symbol} | {direction} | Lot: {lot} | Entry: {entry:.5f} | SL: {sl:.5f}"
+    def trade_open(self, symbol: str, direction: str, lot: float, entry: float, sl: float, zone_type: str = "", score: float = 0):
+        """Log a trade opened with detailed context."""
+        msg = f"🟢 OPEN | {symbol} | {direction} | Lot: {lot} | Entry: {entry:.5f} | SL: {sl:.5f} | Zone: {zone_type} | Score: {score:.1f}"
         self._logger.info(msg)
     
-    def trade_close(self, symbol: str, profit: float, pips: float, reason: str):
-        """Log a trade closed."""
+    def trade_close(self, symbol: str, profit: float, pips: float, reason: str, duration_mins: float = 0):
+        """Log a trade closed with detailed metrics."""
         emoji = "✅" if profit > 0 else "❌"
-        msg = f"{emoji} CLOSE | {symbol} | P/L: ${profit:.2f} | Pips: {pips:.1f} | Reason: {reason}"
+        msg = f"{emoji} CLOSE | {symbol} | P/L: ${profit:.2f} | Pips: {pips:.1f} | Duration: {duration_mins:.1f}m | Reason: {reason}"
         self._logger.info(msg)
     
     def risk_alert(self, message: str):

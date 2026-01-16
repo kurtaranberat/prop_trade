@@ -70,18 +70,23 @@ class TelegramNotifier:
         lot: float,
         entry_price: float,
         stop_loss: float,
-        score: float
+        score: float,
+        zone_type: str = "Unknown",
+        confluence: str = ""
     ) -> bool:
-        """Notify about a new trade opened."""
+        """Notify about a new trade opened with detailed institutional context."""
         text = f"""
-🟢 <b>TRADE AÇILDI</b>
+🟢 <b>INSTITUTIONAL TRADE AÇILDI</b>
 
 📊 <b>Sembol:</b> {symbol}
 📈 <b>Yön:</b> {direction}
 💰 <b>Lot:</b> {lot}
 🎯 <b>Giriş:</b> {entry_price:.5f}
 🛑 <b>Stop Loss:</b> {stop_loss:.5f}
+
 ⭐ <b>Skor:</b> {score:.1f}/100
+🏷️ <b>Bölge:</b> {zone_type}
+🔗 <b>Confluence:</b> {confluence if confluence else 'Standart'}
 
 ⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 """
@@ -96,9 +101,10 @@ class TelegramNotifier:
         exit_price: float,
         profit: float,
         pips: float,
-        reason: str
+        reason: str,
+        duration_mins: float = 0
     ) -> bool:
-        """Notify about a trade closed."""
+        """Notify about a trade closed with detailed performance metrics."""
         emoji = "✅" if profit > 0 else "❌"
         profit_text = f"+${profit:.2f}" if profit > 0 else f"-${abs(profit):.2f}"
         pips_text = f"+{pips:.1f}" if pips > 0 else f"{pips:.1f}"
@@ -114,6 +120,7 @@ class TelegramNotifier:
 
 💵 <b>Kâr/Zarar:</b> {profit_text}
 📏 <b>Pip:</b> {pips_text}
+⏱️ <b>Süre:</b> {duration_mins:.1f} dk
 📝 <b>Sebep:</b> {reason}
 
 ⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}

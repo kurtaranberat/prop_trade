@@ -4,9 +4,9 @@
 
 # MetaTrader 5 Connection Settings
 mt5:
-  login: 12345678                    # MT5 hesap numarası
-  password: "your_password"          # MT5 şifresi
-  server: "ICMarkets-Demo"           # Broker sunucusu
+  login: 52688952                    # MT5 hesap numarası
+  password: "BURAYA_SIFRENI_YAZ"     # MT5 şifresi
+  server: "ICMarketsEU-Demo"         # Broker sunucusu
   timeout: 60000                     # Bağlantı timeout (ms)
   portable_path: null                # MT5 terminal yolu (opsiyonel)
 

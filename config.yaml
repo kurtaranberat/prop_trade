@@ -31,9 +31,9 @@ trading:
 # Risk Management
 risk:
   risk_per_trade: 0.01               # Trade başına risk (%1)
-  max_daily_loss: 0.05               # Günlük maksimum kayıp (%5)
+  max_daily_loss: 0.04               # Günlük maksimum kayıp (%5)
   max_total_drawdown: 0.10           # Toplam maksimum drawdown (%10)
-  max_trades_per_day: 3              # Günde maksimum trade sayısı
+  max_trades_per_day: 5              # Günde maksimum trade sayısı
   min_trade_interval_seconds: 10800  # Trade arası minimum süre (3 saat)
 
 # Prop Firm Challenge Settings
